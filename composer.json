@@ -1,0 +1,16 @@
+{
+    "name": "bedard/debugbar",
+    "description": "Debugbar integration for OctoberCMS.S",
+    "homepage": "http://www.flynsarmy.com",
+    "keywords": ["october", "debugbar"],
+    "authors": [
+        {
+            "name": "Scott Bedard",
+            "email": "scottbedard90@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "barryvdh/laravel-debugbar": "~2.0"
+    }
+}
