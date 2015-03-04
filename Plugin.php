@@ -21,7 +21,7 @@ class Plugin extends PluginBase
             'name'        => 'Debugbar',
             'description' => 'Debugbar integration for OctoberCMS.',
             'author'      => 'Bedard',
-            'icon'        => 'icon-leaf'
+            'icon'        => 'icon-cog'
         ];
     }
 
