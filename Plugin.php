@@ -27,7 +27,7 @@ class Plugin extends PluginBase
     }
 
     /**
-     * Register service provider and Twig extensions.
+     * Register service provider, Twig extensions, and alias facade.
      */
     public function boot()
     {
