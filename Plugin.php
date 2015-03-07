@@ -3,6 +3,7 @@
 use App;
 use Event;
 use System\Classes\PluginBase;
+use Illuminate\Foundation\AliasLoader;
 
 /**
  * Debugbar Plugin Information File
@@ -32,6 +33,10 @@ class Plugin extends PluginBase
     {
         // Service provider
         App::register('\Barryvdh\Debugbar\ServiceProvider');
+
+        // Register alias
+        $alias = AliasLoader::getInstance();
+        $alias->alias('Debugbar', '\Barryvdh\Debugbar\Facade');
 
         // Twig extensions
         Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
