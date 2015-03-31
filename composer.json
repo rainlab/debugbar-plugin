@@ -1,7 +1,7 @@
 {
     "name": "bedard/debugbar",
-    "description": "Debugbar integration for OctoberCMS.S",
-    "homepage": "http://www.flynsarmy.com",
+    "description": "Debugbar integration for OctoberCMS.",
+    "homepage": "http://octobercms.com/author/bedard",
     "keywords": ["october", "debugbar"],
     "authors": [
         {
