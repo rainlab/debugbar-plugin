@@ -38,6 +38,11 @@ class Plugin extends PluginBase
         $alias = AliasLoader::getInstance();
         $alias->alias('Debugbar', '\Barryvdh\Debugbar\Facade');
 
+        // Register middleware
+        if (Config::get('app.debugAjax', false)) {
+            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\Bedard\Debugbar\Middleware\Debugbar');
+        }
+
         // Twig extensions
         Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
             $twig = $controller->getTwig();
