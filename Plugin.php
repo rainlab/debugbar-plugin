@@ -39,7 +39,7 @@ class Plugin extends PluginBase
         $alias->alias('Debugbar', '\Barryvdh\Debugbar\Facade');
 
         // Register middleware
-        if (Config::get('app.debugAjax', false)) {
+        if (\Config::get('app.debugAjax', false)) {
             $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\Bedard\Debugbar\Middleware\Debugbar');
         }
 
