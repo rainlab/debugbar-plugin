@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Routing\Middleware;
 use Illuminate\Http\Response;
 use October\Rain\Exception\AjaxException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class Debugbar implements Middleware
 {
@@ -39,9 +40,7 @@ class Debugbar implements Middleware
         /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugbar */
         $debugbar = $this->app['debugbar'];
         try {
-            /** @var \Illuminate\Http\Response $response */
-            $response = $next($request);
-            return $debugbar->modifyResponse($request, $response);
+            return $next($request);
         } catch (\Exception $ex) {
             if (!\Request::ajax()) {
                 throw $ex;
@@ -50,8 +49,29 @@ class Debugbar implements Middleware
             $message = $ex instanceof AjaxException
                 ? $ex->getContents() : \October\Rain\Exception\ErrorHandler::getDetailedMessage($ex);
 
-            return \Response::make($message, 500, $debugbar->getDataAsHeaders());
+            return \Response::make($message, $this->getStatusCode($ex), $debugbar->getDataAsHeaders());
         }
 
     }
+
+    /**
+     * Checks if the exception implements the HttpExceptionInterface, or returns
+     * as generic 500 error code for a server side error.
+     * @return int
+     */
+    protected function getStatusCode($exception)
+    {
+        if ($exception instanceof HttpExceptionInterface) {
+            $code = $exception->getStatusCode();
+        }
+        elseif ($exception instanceof AjaxException) {
+            $code = 406;
+        }
+        else {
+            $code = 500;
+        }
+
+        return $code;
+    }
+
 }
