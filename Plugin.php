@@ -2,6 +2,8 @@
 
 use App;
 use Event;
+use Debugbar;
+use BackendAuth;
 use System\Classes\PluginBase;
 use Illuminate\Foundation\AliasLoader;
 
@@ -43,8 +45,13 @@ class Plugin extends PluginBase
             $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\Bedard\Debugbar\Middleware\Debugbar');
         }
 
-        // Twig extensions
         Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
+            // Only show for authenticated backend users
+            if (!BackendAuth::check()) {
+                Debugbar::disable();
+            }
+
+            // Twig extensions
             $twig = $controller->getTwig();
             $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
             $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
