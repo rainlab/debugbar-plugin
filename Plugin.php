@@ -12,7 +12,6 @@ use Illuminate\Foundation\AliasLoader;
  */
 class Plugin extends PluginBase
 {
-
     /**
      * Returns information about this plugin.
      *
@@ -24,7 +23,8 @@ class Plugin extends PluginBase
             'name'        => 'Debugbar',
             'description' => 'Debugbar integration for OctoberCMS.',
             'author'      => 'Bedard',
-            'icon'        => 'icon-cog'
+            'icon'        => 'icon-cog',
+            'homepage'    => 'https://github.com/scottbedard/oc-debugbar-plugin'
         ];
     }
 
@@ -45,7 +45,8 @@ class Plugin extends PluginBase
             $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\Bedard\Debugbar\Middleware\Debugbar');
         }
 
-        Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
+        Event::listen('cms.page.beforeDisplay', function($controller, $url, $page)
+        {
             // Only show for authenticated backend users
             if (!BackendAuth::check()) {
                 Debugbar::disable();
@@ -57,5 +58,4 @@ class Plugin extends PluginBase
             $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
         });
     }
-
 }
