@@ -12,7 +12,7 @@ use Illuminate\Foundation\AliasLoader;
  */
 class Plugin extends PluginBase
 {
-	/**
+    /**
      * @var boolean Determine if this plugin should have elevated privileges.
      */
 
