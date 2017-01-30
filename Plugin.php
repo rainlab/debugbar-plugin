@@ -60,8 +60,10 @@ class Plugin extends PluginBase
 
             // Twig extensions
             $twig = $controller->getTwig();
-            $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
-            $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
+            if(!$twig->hasExtension(\Barryvdh\Debugbar\Twig\Extension\Debug::class)){
+                $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
+                $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
+            }
         });
     }
 }
