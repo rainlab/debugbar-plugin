@@ -3,3 +3,4 @@
 1.0.3: Added ajax debugging
 1.0.4: Only display to backend authenticated users
 1.0.5: Use elevated privileges
+1.0.6: Fix fatal error when cms.page.beforeDisplay is fired multiple times (mnishihan)
