@@ -1,6 +1,5 @@
 {
     "name": "bedard/debugbar",
-    "type": "october-plugin",
     "description": "Debugbar integration for OctoberCMS.",
     "homepage": "http://octobercms.com/author/bedard",
     "keywords": ["october", "debugbar"],
