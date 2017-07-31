@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
-        "barryvdh/laravel-debugbar": "2.0.6"
+        "php": ">=7.0.0",
+        "barryvdh/laravel-debugbar": "2.4.x-dev"
     }
 }
