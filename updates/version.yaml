@@ -7,3 +7,4 @@
 1.0.7: Allow plugin to be installed via Composer (tim0991)
 1.0.8: Fix debugbar dependency
 2.0.0: !!! Upgrade for compatibility with Laravel 5.5 (PHP 7+, October 420+)
+2.0.1: Add config file to prevent exceptions from being thrown (credit alxy)
