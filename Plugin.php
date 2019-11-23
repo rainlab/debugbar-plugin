@@ -2,14 +2,22 @@
 
 use App;
 use Event;
+use Debugbar;
+use BackendAuth;
 use System\Classes\PluginBase;
+use Illuminate\Foundation\AliasLoader;
 
 /**
  * Debugbar Plugin Information File
  */
 class Plugin extends PluginBase
 {
+    /**
+     * @var boolean Determine if this plugin should have elevated privileges.
+     */
 
+    public $elevated = true;
+    
     /**
      * Returns information about this plugin.
      *
@@ -21,24 +29,41 @@ class Plugin extends PluginBase
             'name'        => 'Debugbar',
             'description' => 'Debugbar integration for OctoberCMS.',
             'author'      => 'Bedard',
-            'icon'        => 'icon-cog'
+            'icon'        => 'icon-cog',
+            'homepage'    => 'https://github.com/scottbedard/oc-debugbar-plugin'
         ];
     }
 
     /**
-     * Register service provider and Twig extensions.
+     * Register service provider, Twig extensions, and alias facade.
      */
     public function boot()
     {
         // Service provider
         App::register('\Barryvdh\Debugbar\ServiceProvider');
 
-        // Twig extensions
-        Event::listen('cms.page.beforeDisplay', function($controller, $url, $page) {
+        // Register alias
+        $alias = AliasLoader::getInstance();
+        $alias->alias('Debugbar', '\Barryvdh\Debugbar\Facade');
+
+        // Register middleware
+        if (\Config::get('app.debugAjax', false)) {
+            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\Bedard\Debugbar\Middleware\Debugbar');
+        }
+
+        Event::listen('cms.page.beforeDisplay', function($controller, $url, $page)
+        {
+            // Only show for authenticated backend users
+            if (!BackendAuth::check()) {
+                Debugbar::disable();
+            }
+
+            // Twig extensions
             $twig = $controller->getTwig();
-            $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
-            $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
+            if(!$twig->hasExtension(\Barryvdh\Debugbar\Twig\Extension\Debug::class)){
+                $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
+                $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
+            }
         });
     }
-
 }
