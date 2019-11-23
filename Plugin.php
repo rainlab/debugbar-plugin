@@ -2,6 +2,7 @@
 
 use App;
 use Event;
+use Config;
 use Debugbar;
 use BackendAuth;
 use System\Classes\PluginBase;
@@ -41,6 +42,9 @@ class Plugin extends PluginBase
     {
         // Service provider
         App::register('\Barryvdh\Debugbar\ServiceProvider');
+
+        // Configure the debugbar
+        Config::set('debugbar', Config::get('bedard.debugbar::config'));
 
         // Register alias
         $alias = AliasLoader::getInstance();
