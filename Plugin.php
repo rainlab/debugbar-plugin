@@ -58,7 +58,7 @@ class Plugin extends PluginBase
         Event::listen('cms.page.beforeDisplay', function($controller, $url, $page)
         {
             // Only show for authenticated backend users
-            if (!BackendAuth::check()) {
+            if (!BackendAuth::check() && !\Config::get('app.debugLoggedOut', false)) {
                 Debugbar::disable();
             }
 
