@@ -3,6 +3,7 @@
     "description": "Debugbar integration for OctoberCMS.",
     "homepage": "https://github.com/rainlab/debugbar-plugin",
     "type": "october-plugin",
+    "license": "MIT",
     "keywords": ["october", "debugbar"],
     "authors": [
         {
