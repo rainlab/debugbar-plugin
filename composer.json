@@ -1,7 +1,7 @@
 {
-    "name": "bedard/debugbar",
+    "name": "rainlab/debugbar",
     "description": "Debugbar integration for OctoberCMS.",
-    "homepage": "http://octobercms.com/author/bedard",
+    "homepage": "https://github.com/rainlab/debugbar-plugin",
     "type": "october-plugin",
     "keywords": ["october", "debugbar"],
     "authors": [
