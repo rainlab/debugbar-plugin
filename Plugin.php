@@ -1,4 +1,4 @@
-<?php namespace Bedard\Debugbar;
+<?php namespace RainLab\Debugbar;
 
 use App;
 use Event;
@@ -16,9 +16,8 @@ class Plugin extends PluginBase
     /**
      * @var boolean Determine if this plugin should have elevated privileges.
      */
-
     public $elevated = true;
-    
+
     /**
      * Returns information about this plugin.
      *
@@ -29,9 +28,9 @@ class Plugin extends PluginBase
         return [
             'name'        => 'Debugbar',
             'description' => 'Debugbar integration for OctoberCMS.',
-            'author'      => 'Bedard',
+            'author'      => 'RainLab',
             'icon'        => 'icon-cog',
-            'homepage'    => 'https://github.com/scottbedard/oc-debugbar-plugin'
+            'homepage'    => 'https://github.com/rainlab/debugbar-plugin'
         ];
     }
 
@@ -51,12 +50,11 @@ class Plugin extends PluginBase
         $alias->alias('Debugbar', '\Barryvdh\Debugbar\Facade');
 
         // Register middleware
-        if (\Config::get('app.debugAjax', false)) {
-            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\Bedard\Debugbar\Middleware\Debugbar');
+        if (Config::get('app.debugAjax', false)) {
+            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\RainLab\Debugbar\Middleware\Debugbar');
         }
 
-        Event::listen('cms.page.beforeDisplay', function($controller, $url, $page)
-        {
+        Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
             // Only show for authenticated backend users
             if (!BackendAuth::check()) {
                 Debugbar::disable();

@@ -8,3 +8,4 @@
 1.0.8: Fix debugbar dependency
 2.0.0: !!! Upgrade for compatibility with Laravel 5.5 (PHP 7+, October 420+)
 2.0.1: Add config file to prevent exceptions from being thrown (credit alxy)
+3.0.0: Switched vendor to RainLab from Bedard, upgraded for compatibility with Laravel 6.x

@@ -1,4 +1,4 @@
-<?php namespace Bedard\Debugbar\Middleware;
+<?php namespace RainLab\Debugbar\Middleware;
 
 use Closure;
 use Illuminate\Foundation\Application;

@@ -13,6 +13,9 @@ return [
      */
 
     'enabled' => env('DEBUGBAR_ENABLED', null),
+    'except' => [
+        'telescope*'
+    ],
 
     /*
      |--------------------------------------------------------------------------
@@ -26,6 +29,7 @@ return [
      | can also be used. For PDO, run the package migrations first.
      |
      */
+
     'storage' => [
         'enabled'    => true,
         'driver'     => 'file', // redis, file, pdo, custom
@@ -73,6 +77,7 @@ return [
      | in the Messages tab.
      |
      */
+
     'error_handler' => false,
 
     /*
@@ -84,6 +89,7 @@ return [
      | Extension, without the server-side code. It uses Debugbar collectors instead.
      |
      */
+
     'clockwork' => false,
 
     /*
@@ -117,6 +123,7 @@ return [
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
         'cache'           => false, // Display cache events
+        'models'          => false, // Display models
     ],
 
     /*
@@ -161,17 +168,6 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Content security policy compatible
-     |--------------------------------------------------------------------------
-     |
-     | If you have set a content security policy in your header you need to set
-     | this variable to true. You need to add "img-src:'self' data:" to your
-     | csp header. Note: Storage needs to be enabled for this to work.
-     |
-     */
-    'csp-compatible' => false,
-    /*
-     |--------------------------------------------------------------------------
      | Inject Debugbar in Response
      |--------------------------------------------------------------------------
      |
@@ -193,6 +189,7 @@ return [
      | from trying to overcome bugs like this: http://trac.nginx.org/nginx/ticket/97
      |
      */
+
     'route_prefix' => '_debugbar',
 
     /*
@@ -203,5 +200,6 @@ return [
      | By default DebugBar route served from the same domain that request served.
      | To override default domain, specify it as a non-empty value.
      */
+
     'route_domain' => null,
 ];
