@@ -39,11 +39,11 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        // Configure the debugbar
+        Config::set('debugbar', Config::get('rainlab.debugbar::config'));
+
         // Service provider
         App::register('\Barryvdh\Debugbar\ServiceProvider');
-
-        // Configure the debugbar
-        Config::set('debugbar', Config::get('bedard.debugbar::config'));
 
         // Register alias
         $alias = AliasLoader::getInstance();
@@ -62,7 +62,7 @@ class Plugin extends PluginBase
 
             // Twig extensions
             $twig = $controller->getTwig();
-            if(!$twig->hasExtension(\Barryvdh\Debugbar\Twig\Extension\Debug::class)){
+            if (!$twig->hasExtension(\Barryvdh\Debugbar\Twig\Extension\Debug::class)) {
                 $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
                 $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
             }
