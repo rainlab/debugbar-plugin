@@ -1,15 +1,16 @@
 <?php namespace RainLab\Debugbar\Middleware;
 
+use Request;
 use Closure;
+use Response;
+use Exception;
 use Illuminate\Foundation\Application;
-use Illuminate\Contracts\Routing\Middleware;
-use Illuminate\Http\Response;
+use October\Rain\Exception\ErrorHandler;
 use October\Rain\Exception\AjaxException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
-class Debugbar implements Middleware
+class InterpretsAjaxExceptions
 {
-
     /**
      * The Laravel Application
      *
@@ -39,19 +40,19 @@ class Debugbar implements Middleware
     {
         /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugbar */
         $debugbar = $this->app['debugbar'];
+
         try {
             return $next($request);
-        } catch (\Exception $ex) {
-            if (!\Request::ajax()) {
+        } catch (Exception $ex) {
+            if (!Request::ajax()) {
                 throw $ex;
             }
             $debugbar->addException($ex);
             $message = $ex instanceof AjaxException
-                ? $ex->getContents() : \October\Rain\Exception\ErrorHandler::getDetailedMessage($ex);
+                ? $ex->getContents() : ErrorHandler::getDetailedMessage($ex);
 
-            return \Response::make($message, $this->getStatusCode($ex), $debugbar->getDataAsHeaders());
+            return Response::make($message, $this->getStatusCode($ex), $debugbar->getDataAsHeaders());
         }
-
     }
 
     /**
@@ -63,15 +64,12 @@ class Debugbar implements Middleware
     {
         if ($exception instanceof HttpExceptionInterface) {
             $code = $exception->getStatusCode();
-        }
-        elseif ($exception instanceof AjaxException) {
+        } elseif ($exception instanceof AjaxException) {
             $code = 406;
-        }
-        else {
+        } else {
             $code = 500;
         }
 
         return $code;
     }
-
 }

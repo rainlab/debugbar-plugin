@@ -4,7 +4,7 @@ return [
 
     /*
      |--------------------------------------------------------------------------
-     | Debugbar Settings
+     | Debugbar Status
      |--------------------------------------------------------------------------
      |
      | Debugbar is enabled by default, when debug is set to true in app.php.
@@ -13,6 +13,34 @@ return [
      */
 
     'enabled' => env('DEBUGBAR_ENABLED', null),
+
+    /*
+     |--------------------------------------------------------------------------
+     | Allow public access
+     |--------------------------------------------------------------------------
+     |
+     | By default the debugbar requires an authenticated backend user with the
+     | rainlab.debugbar.access_debugbar permission in order to view the debugbar
+     |
+     | Set this to true to bypass that authentication check.
+     |
+     | >**NOTE**: There is no way to bypass the permission check that controls
+     | access to viewing stored requests (rainlab.debugbar.access_stored_requests)
+     | as that can be abused to takeover accounts and steal sensitive information.
+     |
+     */
+
+    'allow_public_access' => false,
+
+    /*
+     |--------------------------------------------------------------------------
+     | Routes to exclude
+     |--------------------------------------------------------------------------
+     |
+     | Specify the routes that the debugbar is not to be included on
+     |
+     */
+
     'except' => [
         'telescope*'
     ],
@@ -117,13 +145,13 @@ return [
         'symfony_request' => true,  // Only one can be enabled..
         'mail'            => true,  // Catch mail messages
         'laravel'         => false, // Laravel version and environment
-        'events'          => false, // All events fired
+        'events'          => true, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
         'logs'            => false, // Add the latest log messages
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
         'cache'           => false, // Display cache events
-        'models'          => false, // Display models
+        'models'          => true, // Display models
     ],
 
     /*

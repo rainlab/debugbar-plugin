@@ -19,7 +19,13 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0",
         "barryvdh/laravel-debugbar": "~3.0"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "barryvdh/laravel-debugbar"
+            ]
+        }
     }
 }
