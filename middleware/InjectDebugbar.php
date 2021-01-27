@@ -38,7 +38,7 @@ class InjectDebugbar extends BaseMiddleware
         $user = BackendAuth::getUser();
 
         if ((!$user || !$user->hasAccess('rainlab.debugbar.access_stored_requests')) &&
-            !Config::get('rainlab.debugbar::store_all_request', false)) {
+            !Config::get('rainlab.debugbar::store_all_requests', false)) {
             // Disable stored requests
             // Note: this will completely disable storing requests from any users
             // without the required permission. If that functionality is desired again
