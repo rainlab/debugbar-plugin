@@ -44,7 +44,10 @@ return [
      | a local environment) you can set this to true to log all requests.
      |
      | Usefull if you want to log requests from Postman without having to worry
-     | about authentication.
+     | about authentication. WARNING: All stored requests are publicly available without
+     | any authentication, so do NOT enable this on an environment that's exposed to the
+     | internet.
+
      |
      */
 
