@@ -34,6 +34,24 @@ return [
 
     /*
      |--------------------------------------------------------------------------
+     | Store all requests
+     |--------------------------------------------------------------------------
+     |
+     | For security reasons the debugbar will only store requests by a
+     | backend user with the rainlab.debugbar.access_debugbar permission.
+     |
+     | If you are not concerned about security (for instance, you are in
+     | a local environment) you can set this to true to log all requests.
+     |
+     | Usefull if you want to log requests from Postman without having to worry
+     | about authentication.
+     |
+     */
+
+    'store_all_request' => true,
+
+    /*
+     |--------------------------------------------------------------------------
      | Routes to exclude
      |--------------------------------------------------------------------------
      |
