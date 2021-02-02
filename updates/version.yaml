@@ -11,3 +11,4 @@
 3.0.0: Switched vendor to RainLab from Bedard, upgraded for compatibility with Laravel 6.x
 3.0.1: Fixed bug that caused 502 errors on AJAX requests
 3.1.0: Important security update and improved styling.
+3.1.1: Added new "store all requests" config option. Added Slovenian translations.
