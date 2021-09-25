@@ -1,23 +1,10 @@
 {
     "name": "rainlab/debugbar-plugin",
-    "description": "Debugbar integration for OctoberCMS.",
+    "description": "Debugbar integration for October CMS.",
     "homepage": "https://github.com/rainlab/debugbar-plugin",
     "type": "october-plugin",
     "license": "MIT",
     "keywords": ["october", "debugbar"],
-    "authors": [
-        {
-            "name": "Scott Bedard",
-            "email": "scottbedard90@gmail.com",
-            "role": "Creator"
-        },
-        {
-            "name": "Luke Towers",
-            "email": "octobercms@luketowers.ca",
-            "homepage": "https://luketowers.ca",
-            "role": "Maintainer"
-        }
-    ],
     "require": {
         "barryvdh/laravel-debugbar": "~3.0"
     },
