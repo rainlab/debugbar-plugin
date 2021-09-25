@@ -3,17 +3,13 @@
 use App;
 use Event;
 use Config;
-use BackendAuth;
 use Backend\Models\UserRole;
 use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
 
 /**
- * Debugbar Plugin Information File
- *
- * TODO:
- * - Fix styling by scoping a html reset to phpdebugbar-openhandler and phpdebugbar
+ * Plugin Information File
  */
 class Plugin extends PluginBase
 {
@@ -51,21 +47,23 @@ class Plugin extends PluginBase
 
         // Register alias
         $alias = AliasLoader::getInstance();
-        $alias->alias('Debugbar', '\Barryvdh\Debugbar\Facade');
+        $alias->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
 
         // Register middleware
         if (Config::get('app.debugAjax', false)) {
-            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware('\RainLab\Debugbar\Middleware\InterpretsAjaxExceptions');
+            $this->app['Illuminate\Contracts\Http\Kernel']->pushMiddleware(\RainLab\Debugbar\Middleware\InterpretsAjaxExceptions::class);
         }
 
         // Add styling
-        $addResources = function ($controller) {
-            $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
+        $addResources = function($controller) {
+            $debugBar = $this->app->make(\Barryvdh\Debugbar\LaravelDebugbar::class);
             if ($debugBar->isEnabled()) {
                 $controller->addCss(url(Config::get('cms.pluginsPath', '/plugins') . '/rainlab/debugbar/assets/css/debugbar.css'));
             }
         };
+
         Event::listen('backend.page.beforeDisplay', $addResources, PHP_INT_MAX);
+
         Event::listen('cms.page.beforeDisplay', $addResources, PHP_INT_MAX);
 
         Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {

@@ -2,9 +2,11 @@
 
 use Illuminate\Contracts\Http\Kernel;
 use Barryvdh\Debugbar\ServiceProvider as BaseServiceProvider;
-
 use RainLab\Debugbar\Middleware\InjectDebugbar;
 
+/**
+ * ServiceProvider
+ */
 class ServiceProvider extends BaseServiceProvider
 {
     /**
@@ -15,6 +17,7 @@ class ServiceProvider extends BaseServiceProvider
     protected function registerMiddleware($middleware)
     {
         $kernel = $this->app[Kernel::class];
+
         $kernel->pushMiddleware(InjectDebugbar::class);
     }
 }
