@@ -1,14 +1,15 @@
-1.0.1: First version of Debugbar
-1.0.2: Debugbar facade aliased (Alxy)
-1.0.3: Added ajax debugging
-1.0.4: Only display to backend authenticated users
-1.0.5: Use elevated privileges
-1.0.6: Fix fatal error when cms.page.beforeDisplay is fired multiple times (mnishihan)
-1.0.7: Allow plugin to be installed via Composer (tim0991)
-1.0.8: Fix debugbar dependency
-2.0.0: !!! Upgrade for compatibility with Laravel 5.5 (PHP 7+, October 420+)
-2.0.1: Add config file to prevent exceptions from being thrown (credit alxy)
-3.0.0: Switched vendor to RainLab from Bedard, upgraded for compatibility with Laravel 6.x
-3.0.1: Fixed bug that caused 502 errors on AJAX requests
-3.1.0: Important security update and improved styling.
-3.1.1: Added new "store all requests" config option. Added Slovenian translations.
+v1.0.1: First version of Debugbar
+v1.0.2: Debugbar facade aliased
+v1.0.3: Added ajax debugging
+v1.0.4: Only display to backend authenticated users
+v1.0.5: Use elevated privileges
+v1.0.6: Fix fatal error when cms.page.beforeDisplay is fired multiple times
+v1.0.7: Allow plugin to be installed via Composer
+v1.0.8: Fix debugbar dependency
+v2.0.0: Upgrade for compatibility with Laravel 5.5
+v2.0.1: Add config file to prevent exceptions from being thrown.
+v3.0.0: Switched vendor to RainLab from Bedard, upgraded for compatibility with Laravel 6
+v3.0.1: Fixed bug that caused 502 errors on AJAX requests
+v3.1.0: Important security update and improved styling
+v3.1.1: Added new "store all requests" config option
+v3.2.0: Compatibility with October v2
