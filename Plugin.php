@@ -49,6 +49,10 @@ class Plugin extends PluginBase
         $alias = AliasLoader::getInstance();
         $alias->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
 
+        $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
+        $modelsCollector = $this->app->make('RainLab\Debugbar\DataCollectors\OctoberModelsCollector');
+        $debugBar->addCollector($modelsCollector);
+
         // Register middleware
         if (Config::get('app.debugAjax', false)) {
             $this->app[HttpKernelContract::class]->pushMiddleware(\RainLab\Debugbar\Middleware\InterpretsAjaxExceptions::class);
