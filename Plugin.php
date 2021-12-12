@@ -57,7 +57,7 @@ class Plugin extends PluginBase
         $debugBar->addCollector($modelsCollector);
 
         // Register middleware
-        if (Config::get('app.debugAjax', false)) {
+        if (Config::get('app.debug_ajax', Config::get('app.debugAjax', false))) {
             $this->app[HttpKernelContract::class]->pushMiddleware(\RainLab\Debugbar\Middleware\InterpretsAjaxExceptions::class);
         }
 

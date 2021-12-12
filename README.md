@@ -22,6 +22,6 @@ See [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) fo
 
 All configuration for the plugin is found in the **plugins/rainlab/debugbar** directory. To override any of these settings, create an override file called **config/rainlab/debugbar/config.php** in your local system.
 
-To include exceptions in the response header of ajax calls set `debugAjax` to `true` in **config/app.php**.
+To include exceptions in the response header of ajax calls set `debug_ajax` to `true` in **config/app.php**.
 
 Events are not captured by default since it can slow down the front-end when many events are fired, you may enable it with the `collectors.events` setting.
