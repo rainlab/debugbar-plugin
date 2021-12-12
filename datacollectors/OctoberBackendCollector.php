@@ -37,7 +37,10 @@ class OctoberBackendCollector extends DataCollector implements Renderable
         ];
 
         if (class_exists(get_class($this->controller))) {
-            if ($ajaxHandler && method_exists($this->controller, $this->action .'_' . $ajaxHandler)) {
+            if ($ajaxHandler && method_exists($this->controller, $ajaxHandler)) {
+                $reflector = new \ReflectionMethod($this->controller, $ajaxHandler);
+                $result['action'] = $ajaxHandler;
+            } elseif ($ajaxHandler && method_exists($this->controller, $this->action .'_' . $ajaxHandler)) {
                 $reflector = new \ReflectionMethod($this->controller, $this->action .'_' . $ajaxHandler);
                 $result['action'] = $this->action .'_' . $ajaxHandler;
             } elseif (method_exists($this->controller, $this->action)) {
@@ -45,7 +48,6 @@ class OctoberBackendCollector extends DataCollector implements Renderable
             } else {
                 $reflector = new \ReflectionClass($this->controller);
             }
-
 
             $filename = ltrim(str_replace(base_path(), '', $reflector->getFileName()), '/');
             $result['file'] = $filename . ':' . $reflector->getStartLine() . '-' . $reflector->getEndLine();
