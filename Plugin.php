@@ -58,7 +58,6 @@ class Plugin extends PluginBase
         $alias = AliasLoader::getInstance();
         $alias->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
 
-
         // Register middleware
         if (Config::get('app.debug_ajax', Config::get('app.debugAjax', false))) {
             $this->app[HttpKernelContract::class]->pushMiddleware(\RainLab\Debugbar\Middleware\InterpretsAjaxExceptions::class);
@@ -82,8 +81,10 @@ class Plugin extends PluginBase
             $debugBar->addCollector(new OctoberBackendCollector($controller, $action, $params));
         });
 
-        Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, Page $page) use ($debugBar) {
-            $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
+        Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, ?Page $page) use ($debugBar) {
+            if ($page) {
+                $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
+            }
         });
     }
     /**
