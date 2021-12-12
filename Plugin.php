@@ -1,9 +1,15 @@
 <?php namespace RainLab\Debugbar;
 
 use App;
+use Backend\Classes\Controller as BackendController;
+use Cms\Classes\Controller as CmsController;
+use Cms\Classes\Page;
 use Event;
 use Config;
 use Backend\Models\UserRole;
+use Illuminate\Routing\Events\RouteMatched;
+use RainLab\Debugbar\DataCollectors\OctoberBackendCollector;
+use RainLab\Debugbar\DataCollectors\OctoberCmsCollector;
 use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
@@ -52,9 +58,6 @@ class Plugin extends PluginBase
         $alias = AliasLoader::getInstance();
         $alias->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
 
-        $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
-        $modelsCollector = $this->app->make('RainLab\Debugbar\DataCollectors\OctoberModelsCollector');
-        $debugBar->addCollector($modelsCollector);
 
         // Register middleware
         if (Config::get('app.debug_ajax', Config::get('app.debugAjax', false))) {
@@ -64,8 +67,25 @@ class Plugin extends PluginBase
         $this->registerResourceInjection();
 
         $this->registerTwigExtensions();
+
+        $this->addCollectors();
     }
 
+    public function addCollectors()
+    {
+        /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugBar */
+        $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
+        $modelsCollector = $this->app->make('RainLab\Debugbar\DataCollectors\OctoberModelsCollector');
+        $debugBar->addCollector($modelsCollector);
+
+        Event::listen('backend.page.beforeDisplay', function (BackendController $controller, $action, array $params) use ($debugBar) {
+            $debugBar->addCollector(new OctoberBackendCollector($controller, $action, $params));
+        });
+
+        Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, Page $page) use ($debugBar) {
+            $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
+        });
+    }
     /**
      * register the service provider
      */
