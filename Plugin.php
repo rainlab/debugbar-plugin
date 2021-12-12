@@ -65,7 +65,9 @@ class Plugin extends PluginBase
 
         $this->registerResourceInjection();
 
-        $this->registerTwigExtensions();
+        if (!App::runningInBackend()) {
+            $this->registerCmsTwigExtensions();
+        }
 
         $this->addCollectors();
     }
@@ -103,9 +105,12 @@ class Plugin extends PluginBase
     /**
      * registerTwigExtensions
      */
-    protected function registerTwigExtensions()
+    protected function registerCmsTwigExtensions()
     {
-        Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
+        $profile = new Profile;
+        $debugBar = $this->app->make(\Barryvdh\Debugbar\LaravelDebugbar::class);
+
+        Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) use ($profile, $debugBar) {
             $twig = $controller->getTwig();
             if (!$twig->hasExtension(\Barryvdh\Debugbar\Twig\Extension\Debug::class)) {
                 $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
@@ -113,19 +118,15 @@ class Plugin extends PluginBase
             }
 
             if (!$twig->hasExtension(ProfilerExtension::class)) {
-                $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
-
-                $profile = new Profile();
                 $twig->addExtension(new ProfilerExtension($profile));
-
-                if (class_exists(\DebugBar\Bridge\NamespacedTwigProfileCollector::class)) {
-                    $debugBar->addCollector(new \DebugBar\Bridge\NamespacedTwigProfileCollector($profile));
-                } else {
-                    $debugBar->addCollector(new \DebugBar\Bridge\TwigProfileCollector($profile));
-                }
             }
         });
 
+        if (class_exists(\DebugBar\Bridge\NamespacedTwigProfileCollector::class)) {
+            $debugBar->addCollector(new \DebugBar\Bridge\NamespacedTwigProfileCollector($profile));
+        } else {
+            $debugBar->addCollector(new \DebugBar\Bridge\TwigProfileCollector($profile));
+        }
     }
 
     /**
