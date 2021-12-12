@@ -8,6 +8,9 @@ use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
+use Twig\Extension\ProfilerExtension;
+use Twig\Profiler\Profile;
+
 /**
  * Plugin Information File
  */
@@ -87,7 +90,21 @@ class Plugin extends PluginBase
                 $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Debug($this->app));
                 $twig->addExtension(new \Barryvdh\Debugbar\Twig\Extension\Stopwatch($this->app));
             }
+
+            if (!$twig->hasExtension(ProfilerExtension::class)) {
+                $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
+
+                $profile = new Profile();
+                $twig->addExtension(new ProfilerExtension($profile));
+
+                if (class_exists(\DebugBar\Bridge\NamespacedTwigProfileCollector::class)) {
+                    $debugBar->addCollector(new \DebugBar\Bridge\NamespacedTwigProfileCollector($profile));
+                } else {
+                    $debugBar->addCollector(new \DebugBar\Bridge\TwigProfileCollector($profile));
+                }
+            }
         });
+
     }
 
     /**
