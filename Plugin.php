@@ -79,7 +79,7 @@ class Plugin extends PluginBase
             $debugBar->addCollector(new OctoberBackendCollector($controller, $action, $params));
         });
 
-        Event::listen('cms.page.display', function(CmsController $controller, $url, Page $page) use ($debugBar) {
+        Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, Page $page) use ($debugBar) {
             $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
         });
     }

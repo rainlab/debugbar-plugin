@@ -55,7 +55,7 @@ class OctoberCmsCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return [
-            "cms" => [
+            "route" => [
                 "icon" => "share",
                 "widget" => "PhpDebugBar.Widgets.VariableListWidget",
                 "map" => "cms",

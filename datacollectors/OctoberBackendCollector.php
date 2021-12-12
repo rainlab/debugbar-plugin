@@ -15,7 +15,7 @@ class OctoberBackendCollector extends DataCollector implements Renderable
     /** @var array  */
     protected $params;
 
-    public function __construct(Controller $controller, $action, array $params)
+    public function __construct(Controller $controller, $action, array $params = [])
     {
         $this->controller = $controller;
         $this->action = $action;
@@ -27,14 +27,25 @@ class OctoberBackendCollector extends DataCollector implements Renderable
      */
     public function collect()
     {
+        $ajaxHandler = $this->controller->getAjaxHandler();
+
         $result = [
             'controller' => get_class($this->controller),
             'action' => $this->action,
             'params' => $this->params,
+            'ajaxHandler' => $ajaxHandler,
         ];
 
-        if (class_exists(get_class($this->controller)) && method_exists($this->controller, $this->action)) {
-            $reflector = new \ReflectionMethod($this->controller, $this->action);
+        if (class_exists(get_class($this->controller))) {
+            if ($ajaxHandler && method_exists($this->controller, $this->action .'_' . $ajaxHandler)) {
+                $reflector = new \ReflectionMethod($this->controller, $this->action .'_' . $ajaxHandler);
+                $result['action'] = $this->action .'_' . $ajaxHandler;
+            } elseif (method_exists($this->controller, $this->action)) {
+                $reflector = new \ReflectionMethod($this->controller, $this->action);
+            } else {
+                $reflector = new \ReflectionClass($this->controller);
+            }
+
 
             $filename = ltrim(str_replace(base_path(), '', $reflector->getFileName()), '/');
             $result['file'] = $filename . ':' . $reflector->getStartLine() . '-' . $reflector->getEndLine();
@@ -58,7 +69,7 @@ class OctoberBackendCollector extends DataCollector implements Renderable
     public function getWidgets()
     {
         return [
-            "backend" => [
+            "route" => [
                 "icon" => "share",
                 "widget" => "PhpDebugBar.Widgets.VariableListWidget",
                 "map" => "backend",
