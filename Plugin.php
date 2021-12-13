@@ -65,30 +65,17 @@ class Plugin extends PluginBase
 
         $this->registerResourceInjection();
 
-        if (!App::runningInBackend()) {
+        if (App::runningInBackend()) {
+            $this->addBackendCollectors();
+        }
+        else {
             $this->registerCmsTwigExtensions();
+            $this->addFrontendCollectors();
         }
 
-        $this->addCollectors();
+        $this->addGlobalCollectors();
     }
 
-    public function addCollectors()
-    {
-        /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugBar */
-        $debugBar = $this->app->make('Barryvdh\Debugbar\LaravelDebugbar');
-        $modelsCollector = $this->app->make('RainLab\Debugbar\DataCollectors\OctoberModelsCollector');
-        $debugBar->addCollector($modelsCollector);
-
-        Event::listen('backend.page.beforeDisplay', function (BackendController $controller, $action, array $params) use ($debugBar) {
-            $debugBar->addCollector(new OctoberBackendCollector($controller, $action, $params));
-        });
-
-        Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, ?Page $page) use ($debugBar) {
-            if ($page) {
-                $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
-            }
-        });
-    }
     /**
      * register the service provider
      */
@@ -103,7 +90,46 @@ class Plugin extends PluginBase
     }
 
     /**
-     * registerTwigExtensions
+     * addGlobalCollectors adds globally available collectors
+     */
+    public function addGlobalCollectors()
+    {
+        /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugBar */
+        $debugBar = $this->app->make(\Barryvdh\Debugbar\LaravelDebugbar::class);
+        $modelsCollector = $this->app->make(\RainLab\Debugbar\DataCollectors\OctoberModelsCollector::class);
+        $debugBar->addCollector($modelsCollector);
+    }
+
+    /**
+     * addFrontendCollectors used by the frontend only
+     */
+    public function addFrontendCollectors()
+    {
+        /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugBar */
+        $debugBar = $this->app->make(\Barryvdh\Debugbar\LaravelDebugbar::class);
+
+        Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, ?Page $page) use ($debugBar) {
+            if ($page) {
+                $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
+            }
+        });
+    }
+
+    /**
+     * addBackendCollectors used by the backend only
+     */
+    public function addBackendCollectors()
+    {
+        /** @var \Barryvdh\Debugbar\LaravelDebugbar $debugBar */
+        $debugBar = $this->app->make(\Barryvdh\Debugbar\LaravelDebugbar::class);
+
+        Event::listen('backend.page.beforeDisplay', function (BackendController $controller, $action, array $params) use ($debugBar) {
+            $debugBar->addCollector(new OctoberBackendCollector($controller, $action, $params));
+        });
+    }
+
+    /**
+     * registerCmsTwigExtensions in the CMS Twig environment
      */
     protected function registerCmsTwigExtensions()
     {
