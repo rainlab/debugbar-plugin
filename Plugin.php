@@ -3,6 +3,7 @@
 use App;
 use Backend\Classes\Controller as BackendController;
 use Cms\Classes\Controller as CmsController;
+use Cms\Classes\Layout;
 use Cms\Classes\Page;
 use Event;
 use Config;
@@ -10,6 +11,7 @@ use Backend\Models\UserRole;
 use Illuminate\Routing\Events\RouteMatched;
 use RainLab\Debugbar\DataCollectors\OctoberBackendCollector;
 use RainLab\Debugbar\DataCollectors\OctoberCmsCollector;
+use RainLab\Debugbar\DataCollectors\OctoberComponentsCollector;
 use System\Classes\PluginBase;
 use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
@@ -111,6 +113,12 @@ class Plugin extends PluginBase
         Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, ?Page $page) use ($debugBar) {
             if ($page) {
                 $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
+            }
+        });
+
+        Event::listen('cms.page.initComponents', function(CmsController $controller, ?Page $page, ?Layout $layout) use ($debugBar) {
+            if ($page) {
+                $debugBar->addCollector(new OctoberComponentsCollector($controller, $page, $layout));
             }
         });
     }
