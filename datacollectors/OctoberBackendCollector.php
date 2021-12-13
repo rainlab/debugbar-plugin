@@ -36,26 +36,69 @@ class OctoberBackendCollector extends DataCollector implements Renderable
             'ajaxHandler' => $ajaxHandler,
         ];
 
-        if (class_exists(get_class($this->controller))) {
-            if ($ajaxHandler && method_exists($this->controller, $ajaxHandler)) {
-                $reflector = new \ReflectionMethod($this->controller, $ajaxHandler);
-                $result['action'] = $ajaxHandler;
-            } elseif ($ajaxHandler && method_exists($this->controller, $this->action .'_' . $ajaxHandler)) {
-                $reflector = new \ReflectionMethod($this->controller, $this->action .'_' . $ajaxHandler);
-                $result['action'] = $this->action .'_' . $ajaxHandler;
-            } elseif (method_exists($this->controller, $this->action)) {
-                $reflector = new \ReflectionMethod($this->controller, $this->action);
-            } else {
-                $reflector = new \ReflectionClass($this->controller);
-            }
-
-            $filename = ltrim(str_replace(base_path(), '', $reflector->getFileName()), '/');
-            $result['file'] = $filename . ':' . $reflector->getStartLine() . '-' . $reflector->getEndLine();
+        $reflector = $this->getReflector($ajaxHandler);
+        if ($reflector instanceof \ReflectionMethod) {
+            $result['controller'] = $reflector->getDeclaringClass()->getName();
+            $result['action'] = $reflector->getName();
+        } else {
+            $result['controller'] = $reflector->getName();
         }
+
+        $filename = ltrim(str_replace(base_path(), '', $reflector->getFileName()), '/');
+        $result['file'] = $filename . ':' . $reflector->getStartLine() . '-' . $reflector->getEndLine();
+
 
         return $result;
     }
 
+    /**
+     * @param $handler
+     * @return \ReflectionClass|\ReflectionMethod
+     * @see Controller::runAjaxHandler()
+     */
+    protected function getReflector($handler)
+    {
+        $reflector = new \ReflectionClass($this->controller);
+
+        if ($handler) {
+            /*
+             * Process Widget handler
+             */
+            if (strpos($handler, '::')) {
+                [$widgetName, $handlerName] = explode('::', $handler);
+
+                if (isset($this->controller->widget->{$widgetName}) && ($widget = $this->controller->widget->{$widgetName}) && method_exists($widget, $handlerName)) {
+                    $reflector = new \ReflectionMethod($widget, $handlerName);
+                }
+            }
+            else {
+                /*
+                 * Process page specific handler (index_onSomething)
+                 */
+                $pageHandler = $this->action . '_' . $handler;
+
+                if (method_exists($this->controller, $pageHandler)) {
+                    logger('pageHandler');
+                    $reflector = new \ReflectionMethod($this->controller, $pageHandler);
+                }
+
+                /*
+                 * Process page global handler (onSomething)
+                 */
+                if (method_exists($this->controller, $handler)) {
+                    $reflector = new \ReflectionMethod($this->controller, $handler);
+                }
+
+                foreach ((array) $this->controller->widget as $widget) {
+                    if (method_exists($widget, $handler)) {
+                        $reflector = new \ReflectionMethod($widget, $handler);
+                    }
+                }
+            }
+        }
+
+        return $reflector;
+    }
 
     /**
      * {@inheritDoc}
