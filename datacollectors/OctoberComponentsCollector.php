@@ -36,14 +36,25 @@ class OctoberComponentsCollector extends DataCollector implements Renderable
         $components = [];
 
         foreach ($this->layout->components as $alias => $componentObj) {
-            $components[$alias] = get_class($componentObj);
+            $components[$alias] = $this->formatVar($this->makeComponentDetails($componentObj));
         }
 
         foreach ($this->page->components as $alias => $componentObj) {
-            $components[$alias] = get_class($componentObj);
+            $components[$alias] = $this->formatVar($this->makeComponentDetails($componentObj));
         }
 
         return $components;
+    }
+
+    /**
+     * makeComponentDetails builds a useful array to describe a component
+     */
+    protected function makeComponentDetails($componentObj): array
+    {
+        return [
+            'class' => get_class($componentObj),
+            'props' => $componentObj->getProperties()
+        ];
     }
 
     /**
@@ -61,7 +72,7 @@ class OctoberComponentsCollector extends DataCollector implements Renderable
     {
         return [
             "components" => [
-                "icon" => "blocks",
+                "icon" => "puzzle-piece",
                 "widget" => "PhpDebugBar.Widgets.VariableListWidget",
                 "map" => "components",
                 "default" => "{}"

@@ -11,9 +11,11 @@ class OctoberCmsCollector extends DataCollector implements Renderable
 {
     /** @var Controller  */
     protected $controller;
+
     /** @var string */
     protected $url;
-    /** @var array  */
+
+    /** @var Page  */
     protected $page;
 
     public function __construct(Controller $controller, $url, Page $page)

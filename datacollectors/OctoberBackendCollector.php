@@ -10,9 +10,11 @@ class OctoberBackendCollector extends DataCollector implements Renderable
 {
     /** @var Controller  */
     protected $controller;
+
     /** @var string */
     protected $action;
-    /** @var array  */
+
+    /** @var array */
     protected $params;
 
     public function __construct(Controller $controller, $action, array $params = [])
