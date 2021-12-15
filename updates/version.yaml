@@ -13,3 +13,4 @@ v3.0.1: Fixed bug that caused 502 errors on AJAX requests
 v3.1.0: Important security update and improved styling
 v3.1.1: Added new "store all requests" config option
 v3.2.0: Compatibility with October v2
+v3.3.0: Adds new collectors for Twig, CMS and Backend. Disables event logging by default
