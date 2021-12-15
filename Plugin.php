@@ -112,13 +112,19 @@ class Plugin extends PluginBase
 
         Event::listen('cms.page.beforeDisplay', function(CmsController $controller, $url, ?Page $page) use ($debugBar) {
             if ($page) {
-                $debugBar->addCollector(new OctoberCmsCollector($controller, $url, $page));
+                $collector = new OctoberCmsCollector($controller, $url, $page);
+                if (!$debugBar->hasCollector($collector->getName())) {
+                    $debugBar->addCollector($collector);
+                }
             }
         });
 
         Event::listen('cms.page.initComponents', function(CmsController $controller, ?Page $page, ?Layout $layout) use ($debugBar) {
             if ($page) {
-                $debugBar->addCollector(new OctoberComponentsCollector($controller, $page, $layout));
+                $collector = new OctoberComponentsCollector($controller, $page, $layout);
+                if (!$debugBar->hasCollector($collector->getName())) {
+                    $debugBar->addCollector($collector);
+                }
             }
         });
     }
@@ -132,7 +138,10 @@ class Plugin extends PluginBase
         $debugBar = $this->app->make(\Barryvdh\Debugbar\LaravelDebugbar::class);
 
         Event::listen('backend.page.beforeDisplay', function (BackendController $controller, $action, array $params) use ($debugBar) {
-            $debugBar->addCollector(new OctoberBackendCollector($controller, $action, $params));
+            $collector = new OctoberBackendCollector($controller, $action, $params);
+            if (!$debugBar->hasCollector($collector->getName())) {
+                $debugBar->addCollector($collector);
+            }
         });
     }
 
