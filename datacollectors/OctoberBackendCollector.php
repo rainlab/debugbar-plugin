@@ -80,7 +80,6 @@ class OctoberBackendCollector extends DataCollector implements Renderable
                 $pageHandler = $this->action . '_' . $handler;
 
                 if (method_exists($this->controller, $pageHandler)) {
-                    logger('pageHandler');
                     $reflector = new \ReflectionMethod($this->controller, $pageHandler);
                 }
 
