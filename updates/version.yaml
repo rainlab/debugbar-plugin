@@ -15,3 +15,4 @@ v3.1.1: Added new "store all requests" config option
 v3.2.0: Compatibility with October v2
 v3.3.0: Adds new collectors for Twig, CMS and Backend. Disables event logging by default
 v3.3.1: Fixes double registration on CMS collectors.
+v3.3.2: Fixes model pollution when bar is disabled.

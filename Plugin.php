@@ -1,19 +1,18 @@
 <?php namespace RainLab\Debugbar;
 
 use App;
-use Backend\Classes\Controller as BackendController;
-use Cms\Classes\Controller as CmsController;
-use Cms\Classes\Layout;
-use Cms\Classes\Page;
 use Event;
 use Config;
+use Cms\Classes\Page;
+use Cms\Classes\Layout;
+use Cms\Classes\Controller as CmsController;
 use Backend\Models\UserRole;
-use Illuminate\Routing\Events\RouteMatched;
+use Backend\Classes\Controller as BackendController;
+use System\Classes\CombineAssets;
+use System\Classes\PluginBase;
 use RainLab\Debugbar\DataCollectors\OctoberBackendCollector;
 use RainLab\Debugbar\DataCollectors\OctoberCmsCollector;
 use RainLab\Debugbar\DataCollectors\OctoberComponentsCollector;
-use System\Classes\PluginBase;
-use System\Classes\CombineAssets;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Contracts\Http\Kernel as HttpKernelContract;
 use Twig\Extension\ProfilerExtension;
@@ -31,17 +30,16 @@ class Plugin extends PluginBase
 
     /**
      * Returns information about this plugin.
-     *
      * @return array
      */
     public function pluginDetails()
     {
         return [
-            'name'        => 'rainlab.debugbar::lang.plugin.name',
+            'name' => 'rainlab.debugbar::lang.plugin.name',
             'description' => 'rainlab.debugbar::lang.plugin.description',
-            'author'      => 'RainLab',
-            'icon'        => 'icon-bug',
-            'homepage'    => 'https://github.com/rainlab/debugbar-plugin'
+            'author' => 'RainLab',
+            'icon' => 'icon-bug',
+            'homepage' => 'https://github.com/rainlab/debugbar-plugin'
         ];
     }
 
@@ -50,21 +48,27 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
-        // Configure the debugbar
+        // Transfer config to debugbar namespace
         Config::set('debugbar', Config::get('rainlab.debugbar::config'));
 
-        // Service provider
+        // Disabled by config, halt
+        if (Config::get('debugbar.enabled') === false) {
+            return;
+        }
+
+        // Register service provider
         App::register(\RainLab\Debugbar\Classes\ServiceProvider::class);
 
         // Register alias
         $alias = AliasLoader::getInstance();
-        $alias->alias('Debugbar', \Barryvdh\Debugbar\Facade::class);
+        $alias->alias('Debugbar', \Barryvdh\Debugbar\Facades\Debugbar::class);
 
         // Register middleware
         if (Config::get('app.debug_ajax', Config::get('app.debugAjax', false))) {
             $this->app[HttpKernelContract::class]->pushMiddleware(\RainLab\Debugbar\Middleware\InterpretsAjaxExceptions::class);
         }
 
+        // Custom debugbar collectors and extensions
         $this->registerResourceInjection();
 
         if (App::runningInBackend()) {
