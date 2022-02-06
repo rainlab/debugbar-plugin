@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\Http\Kernel;
 use Barryvdh\Debugbar\ServiceProvider as BaseServiceProvider;
+use Barryvdh\Debugbar\Middleware\InjectDebugbar as InjectDebugbarBase;
 use RainLab\Debugbar\Middleware\InjectDebugbar;
 
 /**
@@ -18,6 +19,9 @@ class ServiceProvider extends BaseServiceProvider
     {
         $kernel = $this->app[Kernel::class];
 
-        $kernel->pushMiddleware(InjectDebugbar::class);
+        // Prevent double up, base Service Provider has been explicitly loaded
+        if (!$kernel->hasMiddleware(InjectDebugbarBase::class)) {
+            $kernel->pushMiddleware(InjectDebugbar::class);
+        }
     }
 }
