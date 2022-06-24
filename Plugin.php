@@ -75,7 +75,7 @@ class Plugin extends PluginBase
             $this->addBackendCollectors();
         }
         else {
-            $this->registerCmsTwigExtensions();
+            // $this->registerCmsTwigExtensions();
             $this->addFrontendCollectors();
         }
 
