@@ -49,7 +49,7 @@ class Plugin extends PluginBase
     public function boot()
     {
         // Transfer config to debugbar namespace
-        Config::set('debugbar', Config::get('rainlab.debugbar::config'));
+        Config::set('debugbar', Config::get('rainlab.debugbar::config', []));
 
         // Disabled by config, halt
         if (Config::get('debugbar.enabled') === false) {
