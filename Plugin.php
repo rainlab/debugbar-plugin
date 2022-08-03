@@ -75,7 +75,11 @@ class Plugin extends PluginBase
             $this->addBackendCollectors();
         }
         else {
-            // $this->registerCmsTwigExtensions();
+            // Only Twig 2 is supported at this stage
+            if (class_exists('\Twig_Extension')) {
+                $this->registerCmsTwigExtensions();
+            }
+
             $this->addFrontendCollectors();
         }
 
