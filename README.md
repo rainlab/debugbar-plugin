@@ -10,7 +10,7 @@ To install with Composer, run from your project root
 composer require rainlab/debugbar-plugin
 ```
 
-### Usage
+# Usage
 
 Set `debug` to `true` in `config/app.php` and the debugbar should appear on your site to all authenticated backend users with the `rainlab.debugbar.access_debugbar` permission.
 
@@ -18,7 +18,7 @@ If you would like to make the debugbar accessible to all users regardless of aut
 
 See [barryvdh/laravel-debugbar](https://github.com/barryvdh/laravel-debugbar) for more usage instructions and documentation.
 
-### Configuration
+# Configuration
 
 All configuration for the plugin is found in the **plugins/rainlab/debugbar** directory. To override any of these settings, create an override file called **config/rainlab/debugbar/config.php** in your local system.
 
