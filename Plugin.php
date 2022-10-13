@@ -193,9 +193,9 @@ class Plugin extends PluginBase
             }
         };
 
-        Event::listen('backend.page.beforeDisplay', $addResources, PHP_INT_MAX);
+        Event::listen('backend.page.beforeDisplay', $addResources, 500);
 
-        Event::listen('cms.page.beforeDisplay', $addResources, PHP_INT_MAX);
+        Event::listen('cms.page.beforeDisplay', $addResources, 500);
     }
 
     /**
