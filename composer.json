@@ -6,7 +6,7 @@
     "license": "MIT",
     "keywords": ["october", "debugbar"],
     "require": {
-        "barryvdh/laravel-debugbar": "~3.0"
+        "barryvdh/laravel-debugbar": "^3.10.3"
     },
     "extra": {
         "laravel": {
