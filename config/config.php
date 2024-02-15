@@ -159,10 +159,10 @@ return [
         'exceptions'      => true,  // Exception displayer
         'log'             => true,  // Logs from Monolog (merged in messages if enabled)
         'db'              => true,  // Show database (PDO) queries and bindings
-        'views'           => false,  // Views with their data
+        'views'           => false, // Views with their data
         'route'           => true,  // Current route information
         'auth'            => false, // Display Laravel authentication status
-        'gate'            => true, // Display Laravel Gate checks
+        'gate'            => false, // Display Laravel Gate checks
         'session'         => true,  // Display session data
         'symfony_request' => true,  // Only one can be enabled..
         'mail'            => true,  // Catch mail messages
@@ -173,7 +173,7 @@ return [
         'files'           => false, // Show the included files
         'config'          => false, // Display config settings
         'cache'           => false, // Display cache events
-        'models'          => true, // Display models
+        'models'          => false, // Display models
     ],
 
     /*
@@ -253,4 +253,3 @@ return [
 
     'route_domain' => null,
 ];
-
