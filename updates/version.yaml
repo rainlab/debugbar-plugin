@@ -17,3 +17,4 @@ v3.3.0: Adds new collectors for Twig, CMS and Backend. Disables event logging by
 v3.3.1: Fixes double registration on CMS collectors.
 v3.3.2: Fixes model pollution when bar is disabled.
 v3.3.5: Fixes compatibility with latest Debugbar version
+v3.3.6: Fixes styling in the latest Debugbar version
