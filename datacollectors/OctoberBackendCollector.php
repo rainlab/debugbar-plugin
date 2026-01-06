@@ -90,7 +90,7 @@ class OctoberBackendCollector extends DataCollector implements Renderable
                     $reflector = new \ReflectionMethod($this->controller, $handler);
                 }
 
-                foreach ((array) $this->controller->widget as $widget) {
+                foreach ($this->controller->widget as $widget) {
                     if (method_exists($widget, $handler)) {
                         $reflector = new \ReflectionMethod($widget, $handler);
                     }
