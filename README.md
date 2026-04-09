@@ -1,5 +1,14 @@
 # Debugbar Plugin
 
+> **This package is abandoned and no longer maintained.** Please use [october/debugbar](https://github.com/octobercms/debugbar) instead.
+>
+> ```sh
+> composer remove rainlab/debugbar-plugin
+> composer require october/debugbar
+> ```
+
+---
+
 Easily see what's going on under the hood of your October CMS application.
 
 # Installation
